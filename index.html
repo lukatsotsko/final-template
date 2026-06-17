@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Explorer - Dashboard</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body class="body">
     <header class="header">
@@ -73,6 +74,12 @@
             </div>
         </section>
 
+        <section class="map-section section">
+            <h2 class="section__title">Pick from Map</h2>
+            <p id="map-location-badge" class="map-location-badge" hidden></p>
+            <div id="map" class="map-container"></div>
+        </section>
+
         <section class="weather-results section">
             <h2 class="section__title">Current Weather</h2>
             <div id="dashboard-grid" class="dashboard">
@@ -92,6 +99,7 @@
         <p class="footer__text">&copy; 2026 Weather Explorer Project. All rights reserved.</p>
     </footer>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script type="module" src="js/main.js"></script>
 </body>
 </html>

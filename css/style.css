@@ -682,6 +682,44 @@ body::after {
 .project-info__list strong  { color: var(--on-dark); font-weight: 600; }
 
 /* ============================================================
+   Map Section
+   ============================================================ */
+.map-container {
+    height: 420px;
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    box-shadow: var(--sh-lg);
+    border: 1px solid var(--glass-border);
+    position: relative;
+}
+
+.map-location-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    background: rgba(59, 130, 246, 0.18);
+    border: 1px solid rgba(59, 130, 246, 0.38);
+    color: #93c5fd;
+    padding: .45rem 1.1rem;
+    border-radius: 20px;
+    font-size: .875rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    animation: fadeInSlide .3s ease;
+}
+.map-location-badge::before { content: '📍'; font-size: .8rem; }
+
+.leaflet-popup-content-wrapper {
+    background: #1e293b;
+    color: #f1f5f9;
+    border-radius: var(--r-sm);
+    box-shadow: var(--sh-lg);
+    border: 1px solid rgba(255,255,255,.12);
+}
+.leaflet-popup-tip { background: #1e293b; }
+.leaflet-popup-content { margin: .6rem .9rem; font-family: 'Inter', sans-serif; font-size: .875rem; }
+
+/* ============================================================
    Animations
    ============================================================ */
 @keyframes fadeInUp {
@@ -716,6 +754,7 @@ body::after {
 
     .forecast-container { gap: .75rem; }
     .forecast-card { min-width: 110px; }
+    .map-container { height: 280px; }
 }
 
 @media (max-width: 480px) {
