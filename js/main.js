@@ -2,6 +2,10 @@ import { fetchWeather, fetchForecast, API_KEY } from './api.js';
 import * as storage from './storage.js';
 import * as ui from './ui.js';
 
+if (!localStorage.getItem('user')) {
+    window.location.href = 'login.html';
+}
+
 // Application State
 const state = {
     currentWeather: null,
@@ -11,6 +15,17 @@ const state = {
 };
 
 // DOM Elements
+const navUser = document.getElementById('nav-user');
+const logoutBtn = document.getElementById('logout-btn');
+if (navUser) navUser.textContent = localStorage.getItem('user') || '';
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('user');
+        document.cookie = 'authorized=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+        window.location.href = 'login.html';
+    });
+}
+
 const searchForm = document.getElementById('search-form');
 const cityInput = document.getElementById('city-input');
 const dashboardGrid = document.getElementById('dashboard-grid');

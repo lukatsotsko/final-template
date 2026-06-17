@@ -15,6 +15,10 @@
                 <li class="nav__item"><a href="saved.html" class="nav__link">Saved Cities</a></li>
                 <li class="nav__item"><a href="about.html" class="nav__link nav__link--active">About</a></li>
             </ul>
+            <div class="nav__user-area">
+                <span id="nav-user" class="nav__user-name"></span>
+                <button id="logout-btn" class="nav__logout-btn">Logout</button>
+            </div>
         </nav>
     </header>
 
@@ -41,5 +45,18 @@
     <footer class="footer">
         <p class="footer__text">&copy; 2026 Weather Explorer Project. All rights reserved.</p>
     </footer>
+
+    <script>
+        if (!localStorage.getItem('user')) {
+            window.location.href = 'login.html';
+        }
+        const u = document.getElementById('nav-user');
+        if (u) u.textContent = localStorage.getItem('user') || '';
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            localStorage.removeItem('user');
+            document.cookie = 'authorized=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+            window.location.href = 'login.html';
+        });
+    </script>
 </body>
 </html>

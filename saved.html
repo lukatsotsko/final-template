@@ -15,16 +15,18 @@
                 <li class="nav__item"><a href="saved.html" class="nav__link nav__link--active">Saved Cities</a></li>
                 <li class="nav__item"><a href="about.html" class="nav__link">About</a></li>
             </ul>
+            <div class="nav__user-area">
+                <span id="nav-user" class="nav__user-name"></span>
+                <button id="logout-btn" class="nav__logout-btn">Logout</button>
+            </div>
         </nav>
     </header>
 
     <main class="main">
         <section class="saved section">
             <h1 class="section__title">Your Favorite Cities</h1>
-            <div id="saved-grid" class="saved-grid">
-                <!-- Saved cities will be dynamically added here -->
-                <p>You haven't saved any cities yet.</p>
-            </div>
+            <div id="saved-grid" class="saved-grid"></div>
+            <p id="saved-empty" hidden>You haven't saved any cities yet.</p>
         </section>
     </main>
 
@@ -32,6 +34,6 @@
         <p class="footer__text">&copy; 2026 Weather Explorer Project. All rights reserved.</p>
     </footer>
 
-    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/saved.js"></script>
 </body>
 </html>
