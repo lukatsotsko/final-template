@@ -1,4 +1,4 @@
-const API_KEY = 'af779ace59db6aba44e2382d6f5dd809'; // In a real app, this would be in an environment variable
+export const API_KEY = 'af779ace59db6aba44e2382d6f5dd809'; // In a real app, this would be in an environment variable
 const BASE_URL = 'https://api.openweathermap.org/data/2.5/';
 
 /**

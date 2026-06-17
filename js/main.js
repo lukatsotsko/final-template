@@ -1,4 +1,4 @@
-import { fetchWeather, fetchForecast } from './api.js';
+import { fetchWeather, fetchForecast, API_KEY } from './api.js';
 import * as storage from './storage.js';
 import * as ui from './ui.js';
 
@@ -217,11 +217,50 @@ if (searchForm) {
         debouncedSearch(e.target.value);
     });
 }
-
+ui.showSuccess(document.querySelector('main'), "Using your current location");
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     renderRecentSearches();
     if (savedGrid) {
         renderSavedCities();
     }
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+                getWeatherByLocation(latitude, longitude);
+            },
+            (error) => {
+                console.log("Geolocation denied or failed:", error.message);
+            }
+        );
+    }
 });
+
+
+
+async function getWeatherByLocation(lat, lon) {
+    try {
+        ui.showLoading(dashboardGrid);
+
+        const response = await fetch(
+            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch location weather");
+        }
+
+        const data = await response.json();
+
+        state.currentWeather = data;
+
+        // optional: also load forecast for city name
+        const forecastData = await fetchForecast(data.name);
+        state.forecast = processForecastData(forecastData);
+
+        renderDashboard();
+    } catch (error) {
+        ui.showError(dashboardGrid, error.message);
+    }
+}
