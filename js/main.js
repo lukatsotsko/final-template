@@ -1,10 +1,13 @@
-import { fetchWeather, fetchForecast, API_KEY } from './api.js';
+import { fetchWeather, fetchForecast, fetchWeatherByCoords, fetchForecastByCoords, API_KEY } from './api.js';
 import * as storage from './storage.js';
 import * as ui from './ui.js';
 
 if (!localStorage.getItem('user')) {
     window.location.href = 'login.html';
 }
+
+// Map state
+let mapMarker = null;
 
 // Application State
 const state = {
@@ -214,6 +217,69 @@ function renderSavedCities() {
     });
 }
 
+// ===== Map Feature =====
+
+function initMap() {
+    const mapContainer = document.getElementById('map');
+    if (!mapContainer || typeof L === 'undefined') return;
+
+    const map = L.map('map').setView([20, 0], 2);
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        maxZoom: 19
+    }).addTo(map);
+
+    map.on('click', (e) => {
+        handleMapClick(e.latlng.lat, e.latlng.lng, map);
+    });
+}
+
+async function handleMapClick(lat, lon, map) {
+    const badge = document.getElementById('map-location-badge');
+
+    ui.showLoading(dashboardGrid);
+    if (forecastSection) forecastSection.style.display = 'none';
+
+    try {
+        const [weatherData, forecastData] = await Promise.all([
+            fetchWeatherByCoords(lat, lon),
+            fetchForecastByCoords(lat, lon)
+        ]);
+
+        state.currentWeather = weatherData;
+        state.forecast = processForecastData(forecastData);
+
+        storage.addRecentSearch(weatherData.name);
+        state.recentSearches = storage.getRecentSearches();
+
+        if (mapMarker) mapMarker.remove();
+        mapMarker = L.circleMarker([lat, lon], {
+            radius: 9,
+            fillColor: '#3b82f6',
+            color: '#ffffff',
+            weight: 2.5,
+            opacity: 1,
+            fillOpacity: 0.9
+        }).addTo(map).bindPopup(`<strong>${weatherData.name}, ${weatherData.sys.country}</strong>`).openPopup();
+
+        if (badge) {
+            badge.textContent = `Selected location: ${weatherData.name}, ${weatherData.sys.country}`;
+            badge.hidden = false;
+        }
+
+        renderDashboard();
+        renderRecentSearches();
+
+        document.querySelector('.weather-results')?.scrollIntoView({ behavior: 'smooth' });
+    } catch (error) {
+        ui.showError(dashboardGrid, error.message);
+        if (badge) badge.hidden = true;
+    }
+}
+
+// ===== Event Listeners =====
+
 // Event Listeners
 if (searchForm) {
     searchForm.addEventListener('submit', (e) => {
@@ -250,6 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         );
     }
+    initMap();
 });
 
 
