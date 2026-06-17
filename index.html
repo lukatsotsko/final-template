@@ -1,52 +1,93 @@
 <!DOCTYPE html>
-<html lang="ka">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>პროექტის სახელი</title>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Explorer - Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="body">
+    <header class="header">
+        <nav class="nav">
+            <div class="nav__logo">Weather Explorer</div>
+            <ul class="nav__list">
+                <li class="nav__item"><a href="index.html" class="nav__link nav__link--active">Dashboard</a></li>
+                <li class="nav__item"><a href="saved.html" class="nav__link">Saved Cities</a></li>
+                <li class="nav__item"><a href="about.html" class="nav__link">About</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <header>
-    <nav>
-      <span class="nav__logo">პროექტის სახელი</span>
-      <div class="nav__links">
-        <a href="index.html">ძიება</a>
-        <a href="saved.html">შენახული</a>
-      </div>
-      <div class="nav__actions">
-        <span id="nav-user"></span>
-        <button id="logout-btn" type="button">გასვლა</button>
-      </div>
-    </nav>
-  </header>
+    <main class="main">
+        <section class="search section">
+            <h1 class="section__title">Find Weather</h1>
+            <form id="search-form" class="search-form">
+                <div class="search-form__group">
+                    <label for="city-input" class="search-form__label">City Name</label>
+                    <input type="text" id="city-input" class="search-form__input" placeholder="e.g. London, Tokyo" required minlength="2">
+                </div>
 
-  <main>
+                <div class="search-form__group">
+                    <label for="unit-select" class="search-form__label">Units</label>
+                    <select id="unit-select" class="search-form__select">
+                        <option value="metric">Celsius (°C)</option>
+                        <option value="imperial">Fahrenheit (°F)</option>
+                    </select>
+                </div>
 
-    <!-- საძიებო / ფილტრის ფორმა -->
-    <section>
-      <form id="search-form">
-        <!-- დაამატე input ველები აქ (სულ მცირე 3 განსხვავებული ტიპი) -->
-        <button type="submit">ძიება</button>
-      </form>
-    </section>
+                <div class="search-form__group">
+                    <label class="search-form__label">Search Priority</label>
+                    <div class="search-form__radio-group">
+                        <label class="search-form__radio-item">
+                            <input type="radio" name="priority" value="normal" checked> Normal
+                        </label>
+                        <label class="search-form__radio-item">
+                            <input type="radio" name="priority" value="high"> High
+                        </label>
+                    </div>
+                </div>
 
-    <!-- ჩატვირთვის და შეცდომის მდგომარეობები -->
-    <p id="loading-msg" hidden>იტვირთება…</p>
-    <p id="error-msg" hidden></p>
+                <div class="search-form__group">
+                    <label class="search-form__label">
+                        <input type="checkbox" id="save-to-recent" checked> Save to recent
+                    </label>
+                </div>
 
-    <!-- დინამიურად შექმნილი ბარათები აქ განთავსდება -->
-    <section>
-      <div id="results-grid"></div>
-    </section>
+                <div class="search-form__group" style="flex: 1 1 100%;">
+                    <label for="search-notes" class="search-form__label">Notes (optional)</label>
+                    <textarea id="search-notes" class="search-form__textarea" rows="2" placeholder="Any notes for this search?"></textarea>
+                </div>
 
-  </main>
+                <button type="submit" class="search-form__button">Search</button>
+            </form>
 
-  <footer>
-    <!-- footer-ის შიგთავსი -->
-  </footer>
+            <div class="recent-searches">
+                <h3>Recent Searches:</h3>
+                <div id="recent-searches-list" class="recent-searches__list">
+                    <!-- Recent searches will be dynamically added here -->
+                </div>
+            </div>
+        </section>
 
-  <script type="module" src="js/main.js"></script>
+        <section class="weather-results section">
+            <h2 class="section__title">Current Weather</h2>
+            <div id="dashboard-grid" class="dashboard">
+                <p>Enter a city name above to see the current weather.</p>
+            </div>
+        </section>
+
+        <section id="forecast-section" class="forecast-section section" style="display: none;">
+            <h2 class="section__title">5-Day Forecast</h2>
+            <div id="forecast-container" class="forecast-container">
+                <!-- Forecast cards will be dynamically added here -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p class="footer__text">&copy; 2026 Weather Explorer Project. All rights reserved.</p>
+    </footer>
+
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>
