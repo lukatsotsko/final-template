@@ -10,6 +10,9 @@
     <header class="header">
         <nav class="nav">
             <div class="nav__logo">Weather Explorer</div>
+            <div class="nav__user-area" style="margin-left: auto;">
+                <button id="lang-toggle-btn" class="nav__lang-btn" title="Switch to Georgian">🇬🇪 ქარ</button>
+            </div>
         </nav>
     </header>
 
@@ -18,23 +21,25 @@
             <div class="login-header">
                 <div class="login-icon">🌤</div>
                 <h1 class="login-title">Weather Explorer</h1>
-                <p class="login-subtitle">Enter your name to get started</p>
+                <p class="login-subtitle" data-i18n="login.subtitle">Enter your name to get started</p>
             </div>
             <form id="login-form" class="login-form">
                 <div class="login-form__group">
-                    <label for="name-input" class="login-form__label">Your Name</label>
-                    <input type="text" id="name-input" class="login-form__input" placeholder="e.g. Alex" required>
+                    <label for="name-input" class="login-form__label" data-i18n="login.name.label">Your Name</label>
+                    <input type="text" id="name-input" class="login-form__input"
+                           data-i18n-placeholder="login.name.placeholder"
+                           placeholder="e.g. Alex" required>
                 </div>
                 <p id="login-error" class="login-form__error" hidden></p>
-                <button type="submit" class="login-form__button">Get Started</button>
+                <button type="submit" class="login-form__button" data-i18n="login.button">Get Started</button>
             </form>
         </section>
     </main>
 
     <footer class="footer">
-        <p class="footer__text">&copy; 2026 Weather Explorer Project. All rights reserved.</p>
+        <p class="footer__text" data-i18n="footer.text">&copy; 2026 Weather Explorer Project. All rights reserved.</p>
     </footer>
 
-    <script src="js/login.js"></script>
+    <script type="module" src="js/login.js"></script>
 </body>
 </html>

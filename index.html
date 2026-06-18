@@ -12,91 +12,99 @@
         <nav class="nav">
             <div class="nav__logo">Weather Explorer</div>
             <ul class="nav__list">
-                <li class="nav__item"><a href="index.html" class="nav__link nav__link--active">Dashboard</a></li>
-                <li class="nav__item"><a href="saved.html" class="nav__link">Saved Cities</a></li>
-                <li class="nav__item"><a href="about.html" class="nav__link">About</a></li>
+                <li class="nav__item"><a href="index.html" class="nav__link nav__link--active" data-i18n="nav.dashboard">Dashboard</a></li>
+                <li class="nav__item"><a href="saved.html" class="nav__link" data-i18n="nav.saved">Saved Cities</a></li>
+                <li class="nav__item"><a href="about.html" class="nav__link" data-i18n="nav.about">About</a></li>
             </ul>
             <div class="nav__user-area">
                 <span id="nav-user" class="nav__user-name"></span>
-                <button id="logout-btn" class="nav__logout-btn">Logout</button>
+                <button id="lang-toggle-btn" class="nav__lang-btn" title="Switch to Georgian">🇬🇪 ქარ</button>
+                <button id="logout-btn" class="nav__logout-btn" data-i18n="nav.logout">Logout</button>
             </div>
         </nav>
     </header>
 
     <main class="main">
         <section class="search section">
-            <h1 class="section__title">Find Weather</h1>
+            <h1 class="section__title" data-i18n="search.title">Find Weather</h1>
             <form id="search-form" class="search-form">
                 <div class="search-form__group">
-                    <label for="city-input" class="search-form__label">City Name</label>
-                    <input type="text" id="city-input" class="search-form__input" placeholder="e.g. London, Tokyo" required minlength="2">
+                    <label for="city-input" class="search-form__label" data-i18n="search.city.label">City Name</label>
+                    <div class="search-form__input-row">
+                        <input type="text" id="city-input" class="search-form__input"
+                               data-i18n-placeholder="search.city.placeholder"
+                               placeholder="e.g. London, Tokyo" required minlength="2">
+                        <button type="button" id="use-location-btn" class="search-form__location-btn"
+                                data-i18n="search.location.btn" title="Use my current location">📍 My Location</button>
+                    </div>
                 </div>
 
                 <div class="search-form__group">
-                    <label for="unit-select" class="search-form__label">Units</label>
+                    <label for="unit-select" class="search-form__label" data-i18n="search.units.label">Units</label>
                     <select id="unit-select" class="search-form__select">
-                        <option value="metric">Celsius (°C)</option>
-                        <option value="imperial">Fahrenheit (°F)</option>
+                        <option value="metric" data-i18n="search.units.celsius">Celsius (°C)</option>
+                        <option value="imperial" data-i18n="search.units.fahrenheit">Fahrenheit (°F)</option>
                     </select>
                 </div>
 
                 <div class="search-form__group">
-                    <label class="search-form__label">Search Priority</label>
+                    <label class="search-form__label" data-i18n="search.priority.label">Search Priority</label>
                     <div class="search-form__radio-group">
                         <label class="search-form__radio-item">
-                            <input type="radio" name="priority" value="normal" checked> Normal
+                            <input type="radio" name="priority" value="normal" checked>
+                            <span data-i18n="search.priority.normal">Normal</span>
                         </label>
                         <label class="search-form__radio-item">
-                            <input type="radio" name="priority" value="high"> High
+                            <input type="radio" name="priority" value="high">
+                            <span data-i18n="search.priority.high">High</span>
                         </label>
                     </div>
                 </div>
 
                 <div class="search-form__group">
                     <label class="search-form__label">
-                        <input type="checkbox" id="save-to-recent" checked> Save to recent
+                        <input type="checkbox" id="save-to-recent" checked>
+                        <span data-i18n="search.save-recent">Save to recent</span>
                     </label>
                 </div>
 
                 <div class="search-form__group" style="flex: 1 1 100%;">
-                    <label for="search-notes" class="search-form__label">Notes (optional)</label>
-                    <textarea id="search-notes" class="search-form__textarea" rows="2" placeholder="Any notes for this search?"></textarea>
+                    <label for="search-notes" class="search-form__label" data-i18n="search.notes.label">Notes (optional)</label>
+                    <textarea id="search-notes" class="search-form__textarea" rows="2"
+                              data-i18n-placeholder="search.notes.placeholder"
+                              placeholder="Any notes for this search?"></textarea>
                 </div>
 
-                <button type="submit" class="search-form__button">Search</button>
+                <button type="submit" class="search-form__button" data-i18n="search.button">Search</button>
             </form>
 
             <div class="recent-searches">
-                <h3>Recent Searches:</h3>
-                <div id="recent-searches-list" class="recent-searches__list">
-                    <!-- Recent searches will be dynamically added here -->
-                </div>
+                <h3 data-i18n="search.recent.title">Recent Searches:</h3>
+                <div id="recent-searches-list" class="recent-searches__list"></div>
             </div>
         </section>
 
         <section class="map-section section">
-            <h2 class="section__title">Pick from Map</h2>
+            <h2 class="section__title" data-i18n="map.title">Pick from Map</h2>
             <p id="map-location-badge" class="map-location-badge" hidden></p>
             <div id="map" class="map-container"></div>
         </section>
 
         <section class="weather-results section">
-            <h2 class="section__title">Current Weather</h2>
+            <h2 class="section__title" data-i18n="weather.title">Current Weather</h2>
             <div id="dashboard-grid" class="dashboard">
-                <p>Enter a city name above to see the current weather.</p>
+                <p data-i18n="weather.placeholder">Enter a city name above to see the current weather.</p>
             </div>
         </section>
 
         <section id="forecast-section" class="forecast-section section" style="display: none;">
-            <h2 class="section__title">5-Day Forecast</h2>
-            <div id="forecast-container" class="forecast-container">
-                <!-- Forecast cards will be dynamically added here -->
-            </div>
+            <h2 class="section__title" data-i18n="forecast.title">5-Day Forecast</h2>
+            <div id="forecast-container" class="forecast-container"></div>
         </section>
     </main>
 
     <footer class="footer">
-        <p class="footer__text">&copy; 2026 Weather Explorer Project. All rights reserved.</p>
+        <p class="footer__text" data-i18n="footer.text">&copy; 2026 Weather Explorer Project. All rights reserved.</p>
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

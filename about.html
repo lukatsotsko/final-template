@@ -11,45 +11,45 @@
         <nav class="nav">
             <div class="nav__logo">Weather Explorer</div>
             <ul class="nav__list">
-                <li class="nav__item"><a href="index.html" class="nav__link">Dashboard</a></li>
-                <li class="nav__item"><a href="saved.html" class="nav__link">Saved Cities</a></li>
-                <li class="nav__item"><a href="about.html" class="nav__link nav__link--active">About</a></li>
+                <li class="nav__item"><a href="index.html" class="nav__link" data-i18n="nav.dashboard">Dashboard</a></li>
+                <li class="nav__item"><a href="saved.html" class="nav__link" data-i18n="nav.saved">Saved Cities</a></li>
+                <li class="nav__item"><a href="about.html" class="nav__link nav__link--active" data-i18n="nav.about">About</a></li>
             </ul>
             <div class="nav__user-area">
                 <span id="nav-user" class="nav__user-name"></span>
-                <button id="logout-btn" class="nav__logout-btn">Logout</button>
+                <button id="lang-toggle-btn" class="nav__lang-btn" title="Switch to Georgian">🇬🇪 ქარ</button>
+                <button id="logout-btn" class="nav__logout-btn" data-i18n="nav.logout">Logout</button>
             </div>
         </nav>
     </header>
 
     <main class="main">
         <section class="about section">
-            <h1 class="about__title">About Weather Explorer</h1>
+            <h1 class="about__title" data-i18n="about.title">About Weather Explorer</h1>
             <article class="about__content">
-                <p>Weather Explorer is a modern web application that provides real-time weather information for cities around the world. Built using the OpenWeather API, it offers detailed insights into current weather conditions, including temperature, humidity, wind speed, and more.</p>
-                <p>This project was developed as a final web engineering project, showcasing clean code practices, modular JavaScript, and responsive design.</p>
+                <p data-i18n="about.p1">Weather Explorer is a modern web application that provides real-time weather information for cities around the world. Built using the OpenWeather API, it offers detailed insights into current weather conditions, including temperature, humidity, wind speed, and more.</p>
+                <p data-i18n="about.p2">This project was developed as a final web engineering project, showcasing clean code practices, modular JavaScript, and responsive design.</p>
             </article>
 
             <section class="project-info section">
-                <h2 class="section__title">Project Information</h2>
+                <h2 class="section__title" data-i18n="about.info.title">Project Information</h2>
                 <ul class="project-info__list">
-                    <li><strong>Version:</strong> 1.0.0</li>
-                    <li><strong>Technologies:</strong> HTML5, CSS3, Vanilla JavaScript</li>
-                    <li><strong>API:</strong> OpenWeatherMap API</li>
-                    <li><strong>Storage:</strong> Browser LocalStorage</li>
+                    <li><strong data-i18n="about.version">Version:</strong> 1.0.0</li>
+                    <li><strong data-i18n="about.tech">Technologies:</strong> HTML5, CSS3, Vanilla JavaScript</li>
+                    <li><strong data-i18n="about.api">API:</strong> OpenWeatherMap API</li>
+                    <li><strong data-i18n="about.storage">Storage:</strong> Browser LocalStorage</li>
                 </ul>
             </section>
         </section>
     </main>
 
     <footer class="footer">
-        <p class="footer__text">&copy; 2026 Weather Explorer Project. All rights reserved.</p>
+        <p class="footer__text" data-i18n="footer.text">&copy; 2026 Weather Explorer Project. All rights reserved.</p>
     </footer>
 
-    <script>
-        if (!localStorage.getItem('user')) {
-            window.location.href = 'login.html';
-        }
+    <script type="module">
+        import { applyLang, initLangToggle } from './js/i18n.js';
+        if (!localStorage.getItem('user')) window.location.href = 'login.html';
         const u = document.getElementById('nav-user');
         if (u) u.textContent = localStorage.getItem('user') || '';
         document.getElementById('logout-btn').addEventListener('click', () => {
@@ -57,6 +57,8 @@
             document.cookie = 'authorized=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
             window.location.href = 'login.html';
         });
+        applyLang();
+        initLangToggle();
     </script>
 </body>
 </html>

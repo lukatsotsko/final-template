@@ -157,6 +157,24 @@ body::after {
     color: #fca5a5;
 }
 
+.nav__lang-btn {
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.16);
+    color: var(--on-dark-soft);
+    padding: .35rem .85rem;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--ease);
+    white-space: nowrap;
+}
+.nav__lang-btn:hover {
+    background: rgba(59,130,246,.18);
+    border-color: rgba(59,130,246,.38);
+    color: #93c5fd;
+}
+
 /* ============================================================
    Main & Sections
    ============================================================ */
@@ -276,6 +294,30 @@ body::after {
 }
 .search-form__button:hover  { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(59,130,246,.5); }
 .search-form__button:active { transform: translateY(0); }
+
+.search-form__input-row {
+    display: flex;
+    gap: .5rem;
+}
+.search-form__input-row .search-form__input { flex: 1; }
+
+.search-form__location-btn {
+    background: rgba(59,130,246,.1);
+    border: 1.5px solid rgba(59,130,246,.3);
+    color: var(--primary);
+    padding: .7rem .95rem;
+    border-radius: var(--r-sm);
+    font-size: .82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--ease);
+    white-space: nowrap;
+}
+.search-form__location-btn:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
 
 /* ============================================================
    Recent Searches
@@ -526,6 +568,25 @@ body::after {
     transition: var(--ease);
 }
 .saved-card__remove-btn:hover { background: #ef4444; border-color: #ef4444; color: white; }
+
+.saved-card__actions {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+}
+
+.saved-card__view-btn {
+    background: rgba(59,130,246,.1);
+    border: 1px solid rgba(59,130,246,.28);
+    color: #60a5fa;
+    padding: .4rem .85rem;
+    border-radius: var(--r-sm);
+    font-size: .82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--ease);
+}
+.saved-card__view-btn:hover { background: #3b82f6; border-color: #3b82f6; color: white; }
 
 /* ============================================================
    UI States

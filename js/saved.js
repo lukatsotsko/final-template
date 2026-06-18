@@ -1,5 +1,6 @@
 import { getSavedCities, removeCity } from './storage.js';
 import { createSavedCityCard } from './ui.js';
+import { applyLang, initLangToggle } from './i18n.js';
 
 if (!localStorage.getItem('user')) {
     window.location.href = 'login.html';
@@ -13,9 +14,12 @@ document.getElementById('logout-btn').addEventListener('click', () => {
     window.location.href = 'login.html';
 });
 
+applyLang();
+initLangToggle();
+
 function renderSaved() {
     const items = getSavedCities();
-    const grid = document.getElementById('saved-grid');
+    const grid  = document.getElementById('saved-grid');
     const empty = document.getElementById('saved-empty');
 
     grid.innerHTML = '';
@@ -28,12 +32,16 @@ function renderSaved() {
     empty.hidden = true;
 
     items.forEach(city => {
-        const card = createSavedCityCard(city, (name) => {
-            removeCity(name);
-            renderSaved();
-        });
+        const card = createSavedCityCard(
+            city,
+            (name) => { removeCity(name); renderSaved(); },
+            (name) => { window.location.href = `index.html?city=${encodeURIComponent(name)}`; }
+        );
         grid.appendChild(card);
     });
 }
+
+// Re-render cards when language changes so button labels update
+document.addEventListener('langchange', renderSaved);
 
 renderSaved();

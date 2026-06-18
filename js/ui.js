@@ -1,13 +1,10 @@
 import { getWeatherIconUrl } from './api.js';
+import { t } from './i18n.js';
 
-/**
- * Create a weather card element
- * @param {Object} data - Weather data from API
- * @param {boolean} isSaved - Whether the city is already saved
- * @param {Function} onSave - Callback for save button
- * @returns {HTMLElement}
- */
 export function createWeatherCard(data, isSaved, onSave) {
+    const unitSymbol = data._unit === 'imperial' ? '°F' : '°C';
+    const windUnit   = data._unit === 'imperial' ? 'mph' : 'm/s';
+
     const card = document.createElement('article');
     card.className = 'weather-card';
 
@@ -20,7 +17,7 @@ export function createWeatherCard(data, isSaved, onSave) {
 
     const temp = document.createElement('div');
     temp.className = 'weather-card__temp';
-    temp.textContent = `${Math.round(data.main.temp)}°C`;
+    temp.textContent = `${Math.round(data.main.temp)}${unitSymbol}`;
 
     const icon = document.createElement('img');
     icon.className = 'weather-card__icon';
@@ -40,24 +37,25 @@ export function createWeatherCard(data, isSaved, onSave) {
     details.className = 'weather-card__details';
 
     const detailsData = [
-        { label: 'Feels Like', value: `${Math.round(data.main.feels_like)}°C` },
-        { label: 'Humidity', value: `${data.main.humidity}%` },
-        { label: 'Wind Speed', value: `${data.wind.speed} m/s` },
-        { label: 'Pressure', value: `${data.main.pressure} hPa` }
+        { key: 'card.feels_like', value: `${Math.round(data.main.feels_like)}${unitSymbol}` },
+        { key: 'card.humidity',   value: `${data.main.humidity}%` },
+        { key: 'card.wind',       value: `${data.wind.speed} ${windUnit}` },
+        { key: 'card.pressure',   value: `${data.main.pressure} hPa` },
     ];
 
     detailsData.forEach(item => {
         const detail = document.createElement('div');
         detail.className = 'weather-detail';
-        
+
         const label = document.createElement('span');
         label.className = 'weather-detail__label';
-        label.textContent = item.label;
-        
+        label.dataset.i18n = item.key;
+        label.textContent = t(item.key);
+
         const value = document.createElement('span');
         value.className = 'weather-detail__value';
         value.textContent = item.value;
-        
+
         detail.appendChild(label);
         detail.appendChild(value);
         details.appendChild(detail);
@@ -66,8 +64,11 @@ export function createWeatherCard(data, isSaved, onSave) {
     const saveBtn = document.createElement('button');
     saveBtn.className = 'weather-card__save-btn';
     saveBtn.innerHTML = isSaved ? '★' : '☆';
-    saveBtn.title = isSaved ? 'Saved to favorites' : 'Add to favorites';
-    saveBtn.addEventListener('click', () => onSave(data.name));
+    saveBtn.dataset.i18nTitle = isSaved ? 'card.saved.title' : 'card.save.title';
+    saveBtn.title = t(saveBtn.dataset.i18nTitle);
+    saveBtn.addEventListener('click', () => {
+        onSave(data.name);
+    });
 
     card.appendChild(mainInfo);
     card.appendChild(details);
@@ -76,11 +77,6 @@ export function createWeatherCard(data, isSaved, onSave) {
     return card;
 }
 
-/**
- * Create a forecast card element
- * @param {Object} dayData - Processed daily forecast data
- * @returns {HTMLElement}
- */
 export function createForecastCard(dayData) {
     const card = document.createElement('div');
     card.className = 'forecast-card';
@@ -97,11 +93,11 @@ export function createForecastCard(dayData) {
 
     const temps = document.createElement('div');
     temps.className = 'forecast-card__temps';
-    
+
     const maxTemp = document.createElement('span');
     maxTemp.className = 'forecast-card__temp-max';
     maxTemp.textContent = `${Math.round(dayData.maxTemp)}°`;
-    
+
     const minTemp = document.createElement('span');
     minTemp.className = 'forecast-card__temp-min';
     minTemp.textContent = `${Math.round(dayData.minTemp)}°`;
@@ -116,12 +112,6 @@ export function createForecastCard(dayData) {
     return card;
 }
 
-/**
- * Create a recent search button
- * @param {string} city 
- * @param {Function} onClick 
- * @returns {HTMLElement}
- */
 export function createRecentSearchItem(city, onClick) {
     const btn = document.createElement('button');
     btn.className = 'recent-search-btn';
@@ -130,13 +120,7 @@ export function createRecentSearchItem(city, onClick) {
     return btn;
 }
 
-/**
- * Create a saved city card for saved.html
- * @param {string} city 
- * @param {Function} onRemove 
- * @returns {HTMLElement}
- */
-export function createSavedCityCard(city, onRemove) {
+export function createSavedCityCard(city, onRemove, onView) {
     const card = document.createElement('div');
     card.className = 'saved-card';
 
@@ -144,39 +128,39 @@ export function createSavedCityCard(city, onRemove) {
     cityName.className = 'saved-card__name';
     cityName.textContent = city;
 
+    const actions = document.createElement('div');
+    actions.className = 'saved-card__actions';
+
+    if (onView) {
+        const viewBtn = document.createElement('button');
+        viewBtn.className = 'saved-card__view-btn';
+        viewBtn.dataset.i18n = 'saved.view';
+        viewBtn.textContent = t('saved.view');
+        viewBtn.addEventListener('click', () => onView(city));
+        actions.appendChild(viewBtn);
+    }
+
     const removeBtn = document.createElement('button');
     removeBtn.className = 'saved-card__remove-btn';
-    removeBtn.textContent = 'Remove';
+    removeBtn.dataset.i18n = 'saved.remove';
+    removeBtn.textContent = t('saved.remove');
     removeBtn.addEventListener('click', () => onRemove(city));
+    actions.appendChild(removeBtn);
 
     card.appendChild(cityName);
-    card.appendChild(removeBtn);
+    card.appendChild(actions);
 
     return card;
 }
 
-/**
- * Show loading state
- * @param {HTMLElement} container 
- */
 export function showLoading(container) {
-    container.innerHTML = '<div class="loading">Fetching weather data...</div>';
+    container.innerHTML = `<div class="loading">${t('weather.loading')}</div>`;
 }
 
-/**
- * Show error message
- * @param {HTMLElement} container 
- * @param {string} message 
- */
 export function showError(container, message) {
     container.innerHTML = `<div class="error-message">${message}</div>`;
 }
 
-/**
- * Show success message
- * @param {HTMLElement} container 
- * @param {string} message 
- */
 export function showSuccess(container, message) {
     const msgDiv = document.createElement('div');
     msgDiv.className = 'success-message';
