@@ -6,6 +6,29 @@ if (!localStorage.getItem('user')) {
     window.location.href = 'login.html';
 }
 
+// Weather theme palettes
+const WEATHER_THEMES = {
+    clear:   { stops: ['#1a0700','#7c2d12','#c2410c','#ea580c','#f97316'], orb1: 'rgba(251,191,36,.22)', orb2: 'rgba(249,115,22,.17)' },
+    clouds:  { stops: ['#0a0b0d','#141820','#1e2535','#2e3748','#3d4a5c'], orb1: 'rgba(148,163,184,.14)', orb2: 'rgba(100,116,139,.11)' },
+    rain:    { stops: ['#000d1a','#011f38','#023d62','#034e7b','#05659c'], orb1: 'rgba(56,189,248,.18)',  orb2: 'rgba(2,132,199,.14)'   },
+    thunder: { stops: ['#050312','#0f0b25','#1a1740','#2d2b6b','#3d3aa3'], orb1: 'rgba(167,139,250,.2)',  orb2: 'rgba(99,102,241,.16)'  },
+    snow:    { stops: ['#020d1a','#072244','#0d3a7a','#1557b0','#1d6fd4'], orb1: 'rgba(147,197,253,.2)',  orb2: 'rgba(186,230,253,.14)' },
+    mist:    { stops: ['#0d0c0b','#1a1815','#2d2a26','#403c38','#524e4a'], orb1: 'rgba(161,155,148,.15)', orb2: 'rgba(120,113,108,.12)' },
+};
+
+function applyWeatherTheme(condition) {
+    const theme = WEATHER_THEMES[condition];
+    if (!theme) return;
+    const b = document.body;
+    b.style.setProperty('--bg-stop-1', theme.stops[0]);
+    b.style.setProperty('--bg-stop-2', theme.stops[1]);
+    b.style.setProperty('--bg-stop-3', theme.stops[2]);
+    b.style.setProperty('--bg-stop-4', theme.stops[3]);
+    b.style.setProperty('--bg-stop-5', theme.stops[4]);
+    b.style.setProperty('--orb-1', theme.orb1);
+    b.style.setProperty('--orb-2', theme.orb2);
+}
+
 // Map state
 let mapMarker = null;
 
@@ -165,6 +188,8 @@ function renderDashboard() {
     
     dashboardGrid.innerHTML = '';
     if (state.currentWeather) {
+        const condition = ui.getConditionType(state.currentWeather.weather[0].id);
+        applyWeatherTheme(condition);
         const isSaved = state.savedCities.includes(state.currentWeather.name);
         const card = ui.createWeatherCard(state.currentWeather, isSaved, handleToggleSave);
         dashboardGrid.appendChild(card);
@@ -280,7 +305,30 @@ async function handleMapClick(lat, lon, map) {
 
 // ===== Event Listeners =====
 
-// Event Listeners
+const useLocationBtn = document.getElementById('use-location-btn');
+if (useLocationBtn) {
+    useLocationBtn.addEventListener('click', () => {
+        if (!navigator.geolocation) {
+            ui.showError(dashboardGrid, 'Geolocation is not supported by your browser.');
+            return;
+        }
+        useLocationBtn.textContent = '⏳ Locating…';
+        useLocationBtn.disabled = true;
+        navigator.geolocation.getCurrentPosition(
+            ({ coords }) => {
+                useLocationBtn.textContent = '📍 My Location';
+                useLocationBtn.disabled = false;
+                getWeatherByLocation(coords.latitude, coords.longitude);
+            },
+            () => {
+                useLocationBtn.textContent = '📍 My Location';
+                useLocationBtn.disabled = false;
+                ui.showError(dashboardGrid, 'Could not get your location. Please allow location access.');
+            }
+        );
+    });
+}
+
 if (searchForm) {
     searchForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -302,20 +350,20 @@ ui.showSuccess(document.querySelector('main'), "Using your current location");
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     renderRecentSearches();
-    if (savedGrid) {
-        renderSavedCities();
-    }
-    if (navigator.geolocation) {
+    if (savedGrid) renderSavedCities();
+
+    const cityFromUrl = new URLSearchParams(window.location.search).get('city');
+    if (cityFromUrl && cityInput) {
+        cityInput.value = cityFromUrl;
+        handleSearch(cityFromUrl);
+        history.replaceState({}, '', window.location.pathname);
+    } else if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const { latitude, longitude } = position.coords;
-                getWeatherByLocation(latitude, longitude);
-            },
-            (error) => {
-                console.log("Geolocation denied or failed:", error.message);
-            }
+            ({ coords }) => { getWeatherByLocation(coords.latitude, coords.longitude); },
+            (error) => { console.log('Geolocation denied or failed:', error.message); }
         );
     }
+
     initMap();
 });
 

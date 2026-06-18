@@ -25,11 +25,14 @@
 
     <main class="main">
         <section class="search section">
-            <h1 class="section__title">Find Weather</h1>
+            <h1 class="section__title">🔍 Find Weather</h1>
             <form id="search-form" class="search-form">
-                <div class="search-form__group">
+                <div class="search-form__group search-form__group--wide">
                     <label for="city-input" class="search-form__label">City Name</label>
-                    <input type="text" id="city-input" class="search-form__input" placeholder="e.g. London, Tokyo" required minlength="2">
+                    <div class="search-form__input-row">
+                        <input type="text" id="city-input" class="search-form__input" placeholder="e.g. London, Tokyo" required minlength="2">
+                        <button type="button" id="use-location-btn" class="search-form__location-btn" title="Use my current location">📍 My Location</button>
+                    </div>
                 </div>
 
                 <div class="search-form__group">
@@ -44,21 +47,25 @@
                     <label class="search-form__label">Search Priority</label>
                     <div class="search-form__radio-group">
                         <label class="search-form__radio-item">
-                            <input type="radio" name="priority" value="normal" checked> Normal
+                            <input type="radio" name="priority" value="normal" checked>
+                            <span>Normal</span>
                         </label>
                         <label class="search-form__radio-item">
-                            <input type="radio" name="priority" value="high"> High
+                            <input type="radio" name="priority" value="high">
+                            <span>High</span>
                         </label>
                     </div>
                 </div>
 
                 <div class="search-form__group">
-                    <label class="search-form__label">
-                        <input type="checkbox" id="save-to-recent" checked> Save to recent
+                    <label class="search-form__toggle-label">
+                        <input type="checkbox" id="save-to-recent" checked>
+                        <span class="search-form__toggle"></span>
+                        Save to recent
                     </label>
                 </div>
 
-                <div class="search-form__group" style="flex: 1 1 100%;">
+                <div class="search-form__group search-form__group--wide">
                     <label for="search-notes" class="search-form__label">Notes (optional)</label>
                     <textarea id="search-notes" class="search-form__textarea" rows="2" placeholder="Any notes for this search?"></textarea>
                 </div>

@@ -28,10 +28,11 @@ function renderSaved() {
     empty.hidden = true;
 
     items.forEach(city => {
-        const card = createSavedCityCard(city, (name) => {
-            removeCity(name);
-            renderSaved();
-        });
+        const card = createSavedCityCard(
+            city,
+            (name) => { removeCity(name); renderSaved(); },
+            (name) => { window.location.href = `index.html?city=${encodeURIComponent(name)}`; }
+        );
         grid.appendChild(card);
     });
 }
