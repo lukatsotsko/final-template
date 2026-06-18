@@ -727,6 +727,8 @@ body::after {
 /* ============================================================
    UI States
    ============================================================ */
+.is-hidden { display: none; }
+
 .loading {
     display: flex;
     align-items: center;

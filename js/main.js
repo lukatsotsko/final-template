@@ -66,19 +66,11 @@ function getUnits() {
     return unitSelect?.value || 'metric';
 }
 
-function debounce(func, delay) {
-    let timeoutId;
-    return (...args) => {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => func.apply(null, args), delay);
-    };
-}
-
 async function handleSearch(city) {
     if (!city || city.trim() === '') return;
 
     ui.showLoading(dashboardGrid);
-    if (forecastSection) forecastSection.style.display = 'none';
+    if (forecastSection) forecastSection.classList.add('is-hidden');
 
     try {
         const units = getUnits();
@@ -176,9 +168,9 @@ function renderDashboard() {
         state.forecast.forEach(day => {
             forecastContainer.appendChild(ui.createForecastCard(day));
         });
-        if (forecastSection) forecastSection.style.display = 'block';
+        if (forecastSection) forecastSection.classList.remove('is-hidden');
     } else if (forecastSection) {
-        forecastSection.style.display = 'none';
+        forecastSection.classList.add('is-hidden');
     }
 }
 
@@ -212,7 +204,7 @@ async function handleMapClick(lat, lon, map) {
     const badge = document.getElementById('map-location-badge');
 
     ui.showLoading(dashboardGrid);
-    if (forecastSection) forecastSection.style.display = 'none';
+    if (forecastSection) forecastSection.classList.add('is-hidden');
 
     try {
         const units = getUnits();
@@ -306,13 +298,6 @@ if (searchForm) {
         handleSearch(cityInput.value.trim());
     });
 
-    const debouncedLog = debounce((val) => {
-        console.log('Debounced value:', val);
-    }, 500);
-
-    cityInput.addEventListener('input', (e) => {
-        debouncedLog(e.target.value);
-    });
 }
 
 // Initialize

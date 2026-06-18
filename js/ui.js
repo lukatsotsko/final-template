@@ -90,6 +90,7 @@ export function createWeatherCard(data, isSaved, onSave) {
     saveBtn.className = 'weather-card__save-btn' + (isSaved ? ' weather-card__save-btn--saved' : '');
     saveBtn.textContent = t(isSaved ? 'card.saved.label' : 'card.save.label');
     saveBtn.title = t(isSaved ? 'card.saved.title' : 'card.save.title');
+    // Closure: each handler captures data.name and onSave from its createWeatherCard call
     saveBtn.addEventListener('click', () => onSave(data.name));
     mainInfo.appendChild(saveBtn);
 
@@ -138,6 +139,7 @@ export function createRecentSearchItem(city, onClick) {
     const btn = document.createElement('button');
     btn.className = 'recent-search-btn';
     btn.textContent = city;
+    // Closure: captures the specific city string for this button instance
     btn.addEventListener('click', () => onClick(city));
     return btn;
 }
