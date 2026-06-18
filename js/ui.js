@@ -1,4 +1,5 @@
 import { getWeatherIconUrl } from './api.js';
+import { t } from './i18n.js';
 
 export function getConditionType(weatherId) {
     if (weatherId >= 200 && weatherId < 300) return 'thunder';
@@ -58,14 +59,14 @@ export function createWeatherCard(data, isSaved, onSave) {
     details.className = 'weather-card__details';
 
     const detailsData = [
-        { label: 'Feels Like', icon: '🌡', value: `${Math.round(data.main.feels_like)}°C` },
-        { label: 'Humidity',   icon: '💧', value: `${data.main.humidity}%` },
-        { label: 'Wind',       icon: '💨', value: `${data.wind.speed} m/s ${data.wind.deg != null ? degToCompass(data.wind.deg) : ''}` },
-        { label: 'Pressure',   icon: '📊', value: `${data.main.pressure} hPa` },
-        { label: 'Visibility', icon: '👁', value: data.visibility != null ? `${(data.visibility / 1000).toFixed(1)} km` : 'N/A' },
-        { label: 'Clouds',     icon: '☁', value: `${data.clouds?.all ?? 0}%` },
-        { label: 'Sunrise',    icon: '🌅', value: formatLocalTime(data.sys.sunrise, data.timezone) },
-        { label: 'Sunset',     icon: '🌇', value: formatLocalTime(data.sys.sunset, data.timezone) },
+        { key: 'card.feels_like', icon: '🌡', value: `${Math.round(data.main.feels_like)}°C` },
+        { key: 'card.humidity',   icon: '💧', value: `${data.main.humidity}%` },
+        { key: 'card.wind',       icon: '💨', value: `${data.wind.speed} m/s ${data.wind.deg != null ? degToCompass(data.wind.deg) : ''}` },
+        { key: 'card.pressure',   icon: '📊', value: `${data.main.pressure} hPa` },
+        { key: 'card.visibility', icon: '👁', value: data.visibility != null ? `${(data.visibility / 1000).toFixed(1)} km` : 'N/A' },
+        { key: 'card.clouds',     icon: '☁',  value: `${data.clouds?.all ?? 0}%` },
+        { key: 'card.sunrise',    icon: '🌅', value: formatLocalTime(data.sys.sunrise, data.timezone) },
+        { key: 'card.sunset',     icon: '🌇', value: formatLocalTime(data.sys.sunset, data.timezone) },
     ];
 
     detailsData.forEach(item => {
@@ -74,7 +75,7 @@ export function createWeatherCard(data, isSaved, onSave) {
 
         const label = document.createElement('span');
         label.className = 'weather-detail__label';
-        label.textContent = `${item.icon} ${item.label}`;
+        label.textContent = `${item.icon} ${t(item.key)}`;
 
         const value = document.createElement('span');
         value.className = 'weather-detail__value';
@@ -87,8 +88,8 @@ export function createWeatherCard(data, isSaved, onSave) {
 
     const saveBtn = document.createElement('button');
     saveBtn.className = 'weather-card__save-btn' + (isSaved ? ' weather-card__save-btn--saved' : '');
-    saveBtn.innerHTML = isSaved ? '★ Saved' : '☆ Save';
-    saveBtn.title = isSaved ? 'Remove from favorites' : 'Add to favorites';
+    saveBtn.textContent = t(isSaved ? 'card.saved.label' : 'card.save.label');
+    saveBtn.title = t(isSaved ? 'card.saved.title' : 'card.save.title');
     saveBtn.addEventListener('click', () => onSave(data.name));
     mainInfo.appendChild(saveBtn);
 
@@ -98,11 +99,6 @@ export function createWeatherCard(data, isSaved, onSave) {
     return card;
 }
 
-/**
- * Create a forecast card element
- * @param {Object} dayData - Processed daily forecast data
- * @returns {HTMLElement}
- */
 export function createForecastCard(dayData) {
     const card = document.createElement('div');
     card.className = 'forecast-card';
@@ -119,11 +115,11 @@ export function createForecastCard(dayData) {
 
     const temps = document.createElement('div');
     temps.className = 'forecast-card__temps';
-    
+
     const maxTemp = document.createElement('span');
     maxTemp.className = 'forecast-card__temp-max';
     maxTemp.textContent = `${Math.round(dayData.maxTemp)}°`;
-    
+
     const minTemp = document.createElement('span');
     minTemp.className = 'forecast-card__temp-min';
     minTemp.textContent = `${Math.round(dayData.minTemp)}°`;
@@ -138,12 +134,6 @@ export function createForecastCard(dayData) {
     return card;
 }
 
-/**
- * Create a recent search button
- * @param {string} city 
- * @param {Function} onClick 
- * @returns {HTMLElement}
- */
 export function createRecentSearchItem(city, onClick) {
     const btn = document.createElement('button');
     btn.className = 'recent-search-btn';
@@ -152,12 +142,6 @@ export function createRecentSearchItem(city, onClick) {
     return btn;
 }
 
-/**
- * Create a saved city card for saved.html
- * @param {string} city 
- * @param {Function} onRemove 
- * @returns {HTMLElement}
- */
 export function createSavedCityCard(city, onRemove, onView) {
     const card = document.createElement('div');
     card.className = 'saved-card';
@@ -172,14 +156,14 @@ export function createSavedCityCard(city, onRemove, onView) {
     if (onView) {
         const viewBtn = document.createElement('button');
         viewBtn.className = 'saved-card__view-btn';
-        viewBtn.textContent = 'View →';
+        viewBtn.textContent = t('saved.view');
         viewBtn.addEventListener('click', () => onView(city));
         actions.appendChild(viewBtn);
     }
 
     const removeBtn = document.createElement('button');
     removeBtn.className = 'saved-card__remove-btn';
-    removeBtn.textContent = 'Remove';
+    removeBtn.textContent = t('saved.remove');
     removeBtn.addEventListener('click', () => onRemove(city));
     actions.appendChild(removeBtn);
 
@@ -189,28 +173,14 @@ export function createSavedCityCard(city, onRemove, onView) {
     return card;
 }
 
-/**
- * Show loading state
- * @param {HTMLElement} container 
- */
 export function showLoading(container) {
-    container.innerHTML = '<div class="loading">Fetching weather data...</div>';
+    container.innerHTML = `<div class="loading">${t('weather.loading')}</div>`;
 }
 
-/**
- * Show error message
- * @param {HTMLElement} container 
- * @param {string} message 
- */
 export function showError(container, message) {
     container.innerHTML = `<div class="error-message">${message}</div>`;
 }
 
-/**
- * Show success message
- * @param {HTMLElement} container 
- * @param {string} message 
- */
 export function showSuccess(container, message) {
     const msgDiv = document.createElement('div');
     msgDiv.className = 'success-message';

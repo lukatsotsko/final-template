@@ -1,5 +1,6 @@
 import { getSavedCities, removeCity } from './storage.js';
 import { createSavedCityCard } from './ui.js';
+import { applyLang, initLangToggle } from './i18n.js';
 
 if (!localStorage.getItem('user')) {
     window.location.href = 'login.html';
@@ -13,9 +14,12 @@ document.getElementById('logout-btn').addEventListener('click', () => {
     window.location.href = 'login.html';
 });
 
+applyLang();
+initLangToggle();
+
 function renderSaved() {
     const items = getSavedCities();
-    const grid = document.getElementById('saved-grid');
+    const grid  = document.getElementById('saved-grid');
     const empty = document.getElementById('saved-empty');
 
     grid.innerHTML = '';
@@ -36,5 +40,8 @@ function renderSaved() {
         grid.appendChild(card);
     });
 }
+
+// Re-render cards on language change so button labels update
+document.addEventListener('langchange', renderSaved);
 
 renderSaved();

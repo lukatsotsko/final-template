@@ -175,6 +175,24 @@ body::after {
     color: #fca5a5;
 }
 
+.nav__lang-btn {
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.16);
+    color: var(--on-dark-soft);
+    padding: .35rem .85rem;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--ease);
+    white-space: nowrap;
+}
+.nav__lang-btn:hover {
+    background: rgba(59,130,246,.18);
+    border-color: rgba(59,130,246,.38);
+    color: #93c5fd;
+}
+
 /* ============================================================
    Main & Sections
    ============================================================ */

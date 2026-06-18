@@ -10,6 +10,9 @@
     <header class="header">
         <nav class="nav">
             <div class="nav__logo">Weather Explorer</div>
+            <div class="nav__user-area" style="margin-left: auto;">
+                <button id="lang-toggle-btn" class="nav__lang-btn" title="Switch to Georgian">🇬🇪 ქარ</button>
+            </div>
         </nav>
     </header>
 
@@ -18,68 +21,74 @@
             <div class="login-header">
                 <div class="login-icon">🌤</div>
                 <h1 class="login-title">Weather Explorer</h1>
-                <p class="login-subtitle">Your personal weather dashboard</p>
+                <p class="login-subtitle" data-i18n="login.subtitle">Your personal weather dashboard</p>
             </div>
 
             <div class="login-form">
                 <div class="auth-tabs">
-                    <button class="auth-tab auth-tab--active" id="tab-login">Sign In</button>
-                    <button class="auth-tab" id="tab-register">Sign Up</button>
+                    <button class="auth-tab auth-tab--active" id="tab-login" data-i18n="login.tab.signin">Sign In</button>
+                    <button class="auth-tab" id="tab-register" data-i18n="login.tab.signup">Sign Up</button>
                 </div>
 
                 <!-- Sign In panel -->
                 <div id="panel-login">
                     <form id="login-form">
                         <div class="login-form__group">
-                            <label for="login-username" class="login-form__label">Username</label>
+                            <label for="login-username" class="login-form__label" data-i18n="login.username.label">Username</label>
                             <input type="text" id="login-username" class="login-form__input"
+                                   data-i18n-placeholder="login.username.placeholder"
                                    placeholder="Your username" autocomplete="username" required>
                         </div>
                         <div class="login-form__group">
-                            <label for="login-password" class="login-form__label">Password</label>
+                            <label for="login-password" class="login-form__label" data-i18n="login.password.label">Password</label>
                             <div class="login-form__password-row">
                                 <input type="password" id="login-password" class="login-form__input"
+                                       data-i18n-placeholder="login.password.placeholder"
                                        placeholder="Your password" autocomplete="current-password" required>
                                 <button type="button" class="login-form__eye-btn" id="toggle-login-pw" aria-label="Toggle password visibility">👁</button>
                             </div>
                         </div>
                         <p id="login-error" class="login-form__error" hidden></p>
-                        <button type="submit" class="login-form__button" id="login-submit-btn">Sign In</button>
+                        <button type="submit" class="login-form__button" id="login-submit-btn" data-i18n="login.submit">Sign In</button>
                     </form>
-                    <p class="auth-hint">Demo: <strong>demo</strong> / <strong>demo123</strong></p>
+                    <p class="auth-hint" data-i18n="login.hint">Demo: <strong>demo</strong> / <strong>demo123</strong></p>
                 </div>
 
                 <!-- Sign Up panel -->
                 <div id="panel-register" hidden>
                     <form id="register-form">
                         <div class="login-form__group">
-                            <label for="reg-username" class="login-form__label">Username</label>
+                            <label for="reg-username" class="login-form__label" data-i18n="login.reg.username.label">Username</label>
                             <input type="text" id="reg-username" class="login-form__input"
+                                   data-i18n-placeholder="login.reg.username.placeholder"
                                    placeholder="At least 3 characters" autocomplete="username" required>
                         </div>
                         <div class="login-form__group">
-                            <label for="reg-email" class="login-form__label">Email</label>
+                            <label for="reg-email" class="login-form__label" data-i18n="login.reg.email.label">Email</label>
                             <input type="email" id="reg-email" class="login-form__input"
+                                   data-i18n-placeholder="login.reg.email.placeholder"
                                    placeholder="your@email.com" autocomplete="email" required>
                         </div>
                         <div class="login-form__group">
-                            <label for="reg-password" class="login-form__label">Password</label>
+                            <label for="reg-password" class="login-form__label" data-i18n="login.reg.password.label">Password</label>
                             <div class="login-form__password-row">
                                 <input type="password" id="reg-password" class="login-form__input"
+                                       data-i18n-placeholder="login.reg.password.placeholder"
                                        placeholder="At least 6 characters" autocomplete="new-password" required>
                                 <button type="button" class="login-form__eye-btn" id="toggle-reg-pw" aria-label="Toggle password visibility">👁</button>
                             </div>
                         </div>
                         <div class="login-form__group">
-                            <label for="reg-confirm" class="login-form__label">Confirm Password</label>
+                            <label for="reg-confirm" class="login-form__label" data-i18n="login.reg.confirm.label">Confirm Password</label>
                             <div class="login-form__password-row">
                                 <input type="password" id="reg-confirm" class="login-form__input"
+                                       data-i18n-placeholder="login.reg.confirm.placeholder"
                                        placeholder="Repeat your password" autocomplete="new-password" required>
                                 <button type="button" class="login-form__eye-btn" id="toggle-reg-confirm" aria-label="Toggle password visibility">👁</button>
                             </div>
                         </div>
                         <p id="register-error" class="login-form__error" hidden></p>
-                        <button type="submit" class="login-form__button" id="register-submit-btn">Create Account</button>
+                        <button type="submit" class="login-form__button" id="register-submit-btn" data-i18n="login.reg.submit">Create Account</button>
                     </form>
                 </div>
             </div>
@@ -87,9 +96,9 @@
     </main>
 
     <footer class="footer">
-        <p class="footer__text">&copy; 2026 Weather Explorer Project. All rights reserved.</p>
+        <p class="footer__text" data-i18n="footer.text">&copy; 2026 Weather Explorer Project. All rights reserved.</p>
     </footer>
 
-    <script src="js/login.js"></script>
+    <script type="module" src="js/login.js"></script>
 </body>
 </html>

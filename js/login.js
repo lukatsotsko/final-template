@@ -1,3 +1,5 @@
+import { applyLang, initLangToggle, t } from './i18n.js';
+
 // ── Account storage ──────────────────────────────────────────
 function getAccounts() {
     return JSON.parse(localStorage.getItem('wx_accounts') || '[]');
@@ -25,7 +27,6 @@ async function hashPassword(password, salt) {
         const buf = await crypto.subtle.digest('SHA-256', enc.encode(salt + password));
         return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
     }
-    // Fallback for non-secure contexts (http without localhost)
     return btoa(unescape(encodeURIComponent(salt + ':' + password)));
 }
 
@@ -43,6 +44,9 @@ if (localStorage.getItem('user')) {
     window.location.href = 'index.html';
 }
 
+applyLang();
+initLangToggle();
+
 // ── Tab switching ─────────────────────────────────────────────
 const tabLogin    = document.getElementById('tab-login');
 const tabRegister = document.getElementById('tab-register');
@@ -55,7 +59,6 @@ function switchTab(tab) {
     tabRegister.classList.toggle('auth-tab--active', !toLogin);
     panelLogin.hidden = !toLogin;
     panelReg.hidden   = toLogin;
-    // Clear errors when switching
     document.getElementById('login-error').hidden = true;
     document.getElementById('register-error').hidden = true;
 }
@@ -93,21 +96,21 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     const btn      = document.getElementById('login-submit-btn');
 
     document.getElementById('login-error').hidden = true;
-    btn.textContent = 'Signing in…';
+    btn.textContent = t('login.signing');
     btn.disabled    = true;
 
     const account = findAccount(username);
     if (!account) {
-        showError('login-error', 'No account found with that username.');
-        btn.textContent = 'Sign In';
+        showError('login-error', t('login.error.no-account'));
+        btn.textContent = t('login.submit');
         btn.disabled    = false;
         return;
     }
 
     const hash = await hashPassword(password, account.salt);
     if (hash !== account.passwordHash) {
-        showError('login-error', 'Incorrect password. Please try again.');
-        btn.textContent = 'Sign In';
+        showError('login-error', t('login.error.wrong-password'));
+        btn.textContent = t('login.submit');
         btn.disabled    = false;
         return;
     }
@@ -129,27 +132,27 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     document.getElementById('register-error').hidden = true;
 
     if (username.length < 3) {
-        showError('register-error', 'Username must be at least 3 characters.');
+        showError('register-error', t('login.error.username-short'));
         return;
     }
     if (findAccount(username)) {
-        showError('register-error', 'That username is already taken.');
+        showError('register-error', t('login.error.username-taken'));
         return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        showError('register-error', 'Please enter a valid email address.');
+        showError('register-error', t('login.error.email-invalid'));
         return;
     }
     if (password.length < 6) {
-        showError('register-error', 'Password must be at least 6 characters.');
+        showError('register-error', t('login.error.password-short'));
         return;
     }
     if (password !== confirm) {
-        showError('register-error', 'Passwords do not match.');
+        showError('register-error', t('login.error.password-mismatch'));
         return;
     }
 
-    btn.textContent = 'Creating account…';
+    btn.textContent = t('login.reg.creating');
     btn.disabled    = true;
 
     const salt         = generateSalt();
