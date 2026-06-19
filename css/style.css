@@ -126,6 +126,9 @@ body::after {
 }
 
 .nav__logo {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
     font-size: 1.25rem;
     font-weight: 800;
     letter-spacing: -.4px;
@@ -134,6 +137,13 @@ body::after {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     white-space: nowrap;
+    flex-shrink: 0;
+    text-decoration: none;
+}
+
+.nav__logo-img {
+    width: 36px;
+    height: 36px;
     flex-shrink: 0;
 }
 
@@ -1061,6 +1071,7 @@ body::after {
     .weather-card__city { font-size: 1.3rem; }
     .weather-card__temp { font-size: 3.5rem; }
     .nav__logo         { font-size: 1.1rem; }
+    .nav__logo-img     { width: 30px; height: 30px; }
     .main              { padding: 0 1rem; }
     .search-form       { grid-template-columns: 1fr; }
 }
