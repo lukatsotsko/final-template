@@ -13,6 +13,9 @@
                 <img src="img/logo.svg" alt="" class="nav__logo-img" aria-hidden="true">
                 Weather Explorer
             </a>
+            <button class="nav__burger" id="nav-burger" aria-label="Open navigation" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
             <ul class="nav__list">
                 <li class="nav__item"><a href="index.html" class="nav__link" data-i18n="nav.dashboard">Dashboard</a></li>
                 <li class="nav__item"><a href="saved.html" class="nav__link nav__link--active" data-i18n="nav.saved">Saved Cities</a></li>
@@ -38,6 +41,7 @@
         <p class="footer__text" data-i18n="footer.text">&copy; 2026 Weather Explorer Project. All rights reserved.</p>
     </footer>
 
+    <script type="module" src="js/nav.js"></script>
     <script type="module" src="js/saved.js"></script>
 </body>
 </html>
