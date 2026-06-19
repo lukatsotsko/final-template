@@ -159,7 +159,7 @@ function renderDashboard() {
         const condition = ui.getConditionType(state.currentWeather.weather[0].id);
         applyWeatherTheme(condition);
         const isSaved = state.savedCities.includes(state.currentWeather.name);
-        const card = ui.createWeatherCard(state.currentWeather, isSaved, handleToggleSave);
+        const card = ui.createWeatherCard(state.currentWeather, isSaved, handleToggleSave, getUnits());
         dashboardGrid.appendChild(card);
     }
 
@@ -297,7 +297,14 @@ if (searchForm) {
         e.preventDefault();
         handleSearch(cityInput.value.trim());
     });
+}
 
+if (unitSelect) {
+    unitSelect.addEventListener('change', () => {
+        if (state.currentWeather) {
+            handleSearch(state.currentWeather.name);
+        }
+    });
 }
 
 // Initialize

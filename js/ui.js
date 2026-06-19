@@ -20,7 +20,7 @@ function formatLocalTime(unixTs, tzOffset) {
     return `${String(d.getUTCHours()).padStart(2, '0')}:${String(d.getUTCMinutes()).padStart(2, '0')}`;
 }
 
-export function createWeatherCard(data, isSaved, onSave) {
+export function createWeatherCard(data, isSaved, onSave, units = 'metric') {
     const card = document.createElement('article');
     card.className = 'weather-card';
     card.dataset.condition = getConditionType(data.weather[0].id);
@@ -34,7 +34,8 @@ export function createWeatherCard(data, isSaved, onSave) {
 
     const temp = document.createElement('div');
     temp.className = 'weather-card__temp';
-    temp.textContent = `${Math.round(data.main.temp)}°C`;
+    const unitSymbol = units === 'imperial' ? '°F' : '°C';
+    temp.textContent = `${Math.round(data.main.temp)}${unitSymbol}`;
 
     const tempRange = document.createElement('div');
     tempRange.className = 'weather-card__temp-range';
@@ -59,7 +60,7 @@ export function createWeatherCard(data, isSaved, onSave) {
     details.className = 'weather-card__details';
 
     const detailsData = [
-        { key: 'card.feels_like', icon: '🌡', value: `${Math.round(data.main.feels_like)}°C` },
+        { key: 'card.feels_like', icon: '🌡', value: `${Math.round(data.main.feels_like)}${unitSymbol}` },
         { key: 'card.humidity',   icon: '💧', value: `${data.main.humidity}%` },
         { key: 'card.wind',       icon: '💨', value: `${data.wind.speed} m/s ${data.wind.deg != null ? degToCompass(data.wind.deg) : ''}` },
         { key: 'card.pressure',   icon: '📊', value: `${data.main.pressure} hPa` },
