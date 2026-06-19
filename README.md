@@ -149,3 +149,4 @@ file://
 may disable some browser security features.
 
 ---
+NETLIFY LINK : https://weatherexplorerx.netlify.app/login.html
