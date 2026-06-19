@@ -1,48 +1,47 @@
-import { getSaved, setSaved } from './api.js';
+import { getSavedCities, removeCity } from './storage.js';
+import { createSavedCityCard } from './ui.js';
+import { applyLang, initLangToggle } from './i18n.js';
 
-// თუ მომხმარებელი არ არის ავტორიზებული — login.html-ზე გადამისამართება
 if (!localStorage.getItem('user')) {
-  window.location.href = 'login.html';
+    window.location.href = 'login.html';
 }
 
 document.getElementById('nav-user').textContent = localStorage.getItem('user') || '';
 
 document.getElementById('logout-btn').addEventListener('click', () => {
-  localStorage.removeItem('user');
-  document.cookie = 'authorized=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
-  window.location.href = 'login.html';
+    localStorage.removeItem('user');
+    document.cookie = 'authorized=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+    window.location.href = 'login.html';
 });
 
+applyLang();
+initLangToggle();
+
 function renderSaved() {
-  const items = getSaved();
-  const grid = document.getElementById('saved-grid');
-  const empty = document.getElementById('saved-empty');
+    const items = getSavedCities();
+    const grid  = document.getElementById('saved-grid');
+    const empty = document.getElementById('saved-empty');
 
-  grid.innerHTML = '';
+    grid.innerHTML = '';
 
-  if (!items.length) {
-    empty.hidden = false;
-    return;
-  }
+    if (!items.length) {
+        empty.hidden = false;
+        return;
+    }
 
-  empty.hidden = true;
+    empty.hidden = true;
 
-  items.forEach(item => {
-    const card = document.createElement('article');
-    // ბარათის შიგთავსი აქ
-
-    const removeBtn = document.createElement('button');
-    removeBtn.type = 'button';
-    removeBtn.textContent = 'წაშლა';
-    removeBtn.addEventListener('click', () => {
-      const updated = getSaved().filter(saved => saved.id !== item.id);
-      setSaved(updated);
-      renderSaved();
+    items.forEach(city => {
+        const card = createSavedCityCard(
+            city,
+            (name) => { removeCity(name); renderSaved(); },
+            (name) => { window.location.href = `index.html?city=${encodeURIComponent(name)}`; }
+        );
+        grid.appendChild(card);
     });
-
-    card.appendChild(removeBtn);
-    grid.appendChild(card);
-  });
 }
+
+// Re-render cards on language change so button labels update
+document.addEventListener('langchange', renderSaved);
 
 renderSaved();
