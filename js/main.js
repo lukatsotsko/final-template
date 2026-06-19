@@ -1,3 +1,4 @@
+import './nav.js';
 import { fetchWeather, fetchForecast, fetchWeatherByCoords, fetchForecastByCoords } from './api.js';
 import * as storage from './storage.js';
 import * as ui from './ui.js';

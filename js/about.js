@@ -1,3 +1,4 @@
+import './nav.js';
 import { applyLang, initLangToggle } from './i18n.js';
 
 if (!localStorage.getItem('user')) window.location.href = 'login.html';

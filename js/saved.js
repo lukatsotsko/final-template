@@ -1,3 +1,4 @@
+import './nav.js';
 import { getSavedCities, removeCity } from './storage.js';
 import { createSavedCityCard } from './ui.js';
 import { applyLang, initLangToggle } from './i18n.js';
