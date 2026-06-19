@@ -277,8 +277,7 @@ body::after {
 }
 
 .search-form__input,
-.search-form__select,
-.search-form__textarea {
+.search-form__select {
     padding: .7rem 1rem;
     border: 1.5px solid #e2e8f0;
     border-radius: var(--r-sm);
@@ -289,13 +288,11 @@ body::after {
     outline: none;
 }
 .search-form__input:focus,
-.search-form__select:focus,
-.search-form__textarea:focus {
+.search-form__select:focus {
     border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(59,130,246,.14);
 }
-.search-form__input::placeholder,
-.search-form__textarea::placeholder { color: var(--text-3); }
+.search-form__input::placeholder { color: var(--text-3); }
 
 .search-form__input-row {
     display: flex;
@@ -391,17 +388,16 @@ body::after {
     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
     color: white;
     border: none;
-    padding: .75rem 2.25rem;
+    padding: .85rem 2rem;
     border-radius: var(--r-sm);
-    font-size: .95rem;
+    font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
     transition: var(--spring);
     box-shadow: 0 4px 16px rgba(59,130,246,.35);
-    white-space: nowrap;
     grid-column: 1 / -1;
-    justify-self: end;
-    min-width: 160px;
+    width: 100%;
+    letter-spacing: .02em;
 }
 .search-form__button:hover  { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(59,130,246,.5); }
 .search-form__button:active { transform: translateY(0); }
@@ -663,66 +659,84 @@ body::after {
    ============================================================ */
 .saved-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 1.25rem;
 }
 
 .saved-card {
-    background: var(--surface);
-    border: 1px solid rgba(255,255,255,.65);
+    background: var(--dark-glass);
+    border: 1px solid var(--glass-border);
     border-radius: var(--r);
-    padding: 1.5rem;
+    padding: 1.6rem 1.4rem 1.2rem;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 1.2rem;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
     box-shadow: var(--sh);
     transition: var(--spring);
     animation: fadeInUp .35s ease both;
+    position: relative;
+    overflow: hidden;
 }
-.saved-card:hover { transform: translateY(-4px); box-shadow: var(--sh-lg); }
+
+.saved-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    border-radius: var(--r) var(--r) 0 0;
+}
+
+.saved-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--sh-lg);
+    border-color: rgba(255,255,255,.35);
+}
 
 .saved-card__name {
-    font-size: 1.05rem;
+    font-size: 1.15rem;
     font-weight: 700;
-    color: var(--text);
-    display: flex;
-    align-items: center;
-    gap: .45rem;
-}
-.saved-card__name::before { content: '📍'; font-size: .9rem; }
-
-.saved-card__actions {
+    color: var(--on-dark);
     display: flex;
     align-items: center;
     gap: .5rem;
-    flex-shrink: 0;
+    letter-spacing: -.01em;
+}
+.saved-card__name::before { content: '📍'; font-size: 1rem; }
+
+.saved-card__actions {
+    display: flex;
+    gap: .5rem;
 }
 
 .saved-card__view-btn {
-    background: rgba(59,130,246,.09);
-    border: 1px solid rgba(59,130,246,.24);
-    color: var(--primary);
-    padding: .4rem .85rem;
+    flex: 1;
+    background: var(--primary);
+    border: none;
+    color: #fff;
+    padding: .55rem .75rem;
     border-radius: var(--r-sm);
     font-size: .82rem;
     font-weight: 600;
     cursor: pointer;
     transition: var(--ease);
 }
-.saved-card__view-btn:hover { background: var(--primary); border-color: var(--primary); color: white; }
+.saved-card__view-btn:hover { background: var(--primary-dark); }
 
 .saved-card__remove-btn {
-    background: rgba(239,68,68,.09);
-    border: 1px solid rgba(239,68,68,.22);
-    color: #ef4444;
-    padding: .4rem .85rem;
+    background: rgba(239,68,68,.13);
+    border: 1px solid rgba(239,68,68,.28);
+    color: #f87171;
+    padding: .55rem .75rem;
     border-radius: var(--r-sm);
     font-size: .82rem;
     font-weight: 600;
     cursor: pointer;
     transition: var(--ease);
 }
-.saved-card__remove-btn:hover { background: #ef4444; border-color: #ef4444; color: white; }
+.saved-card__remove-btn:hover { background: #ef4444; border-color: #ef4444; color: #fff; }
 
 /* ============================================================
    UI States
